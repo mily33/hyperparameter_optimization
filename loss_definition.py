@@ -9,5 +9,5 @@ class PolicyLoss(nn.Module):
 
     def forward(self, data, mu, sigma):
         distribution = Normal(mu, sigma)
-        loss_value = torch.mean(distribution.log_prob(data.x) * data.y)
+        loss_value = torch.mean(distribution.log_prob(data[:, 0]) * data[:, 1])
         return loss_value

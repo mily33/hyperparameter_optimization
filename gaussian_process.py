@@ -27,11 +27,11 @@ class SampleFunctions(object):
         self.query_x = None
         self.query_y = None
 
-    def sample(self, num):
+    def sample(self, num=1):
         self.query_x = np.atleast_2d(10 * np.random.rand(50)).T
         self.query_y = self.gp.sample_y(self.query_x, num)
         self.function_list = []
-        x = np.atleast_2d(np.linspace(0, 10, 1000)).T
+
         for i in range(num):
             self.function_list.append(gaussian_process.GaussianProcessRegressor(self.kernels[4]))
             self.function_list[i].fit(self.query_x, self.query_y[:, i])
@@ -42,5 +42,6 @@ class SampleFunctions(object):
     def predict(self, x):
         y = []
         for i in range(len(self.function_list)):
-            y.append(self.function_list[i].predict(x))
+            result = self.function_list[i].predict(np.atleast_2d(x[i]))
+            y.append(result)
         return np.atleast_2d(y)
